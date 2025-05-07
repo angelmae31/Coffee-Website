@@ -28,7 +28,7 @@ $featuredItems = getFeaturedItems(3);
         </div>
         <div class="about-content">
             <div class="about-img">
-                <img src="assets/images/about.jpg" alt="Green Cafe Interior">
+                <img src="assets/images/9.jpg" alt="Green Cafe Interior">
             </div>
             <div class="about-text">
                 <h3>Our Story</h3>

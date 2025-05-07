@@ -52,7 +52,7 @@ while ($row = $result->fetch_assoc()) {
 ?>
 
 <!-- Order Confirmation Banner -->
-<section class="hero" style="height: 40vh; background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/images/order-confirmation.jpg');">
+<section class="hero" style="height: 40vh; background: var(--green);">
     <div class="container">
         <div class="hero-content">
             <h1 class="hero-title">Order Confirmed</h1>
@@ -215,7 +215,7 @@ while ($row = $result->fetch_assoc()) {
                         <a href="menu.php" class="btn btn-primary">
                             <i class="fas fa-utensils"></i> Browse More Items
                         </a>
-                        <a href="index.php" class="btn btn-secondary">
+                        <a href="../index.php" class="btn btn-secondary">
                             <i class="fas fa-home"></i> Return to Homepage
                         </a>
                     </div>

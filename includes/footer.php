@@ -30,9 +30,9 @@
                 
                 <div class="footer-item">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 123 Cafe Street, City, Country</p>
-                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                    <p><i class="fas fa-envelope"></i> info@greencafe.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Cafe Street, City, Philippines</p>
+                    <p><i class="fas fa-phone"></i> +63 955-098-3080</p>
+                    <p><i class="fas fa-envelope"></i> Greencafe@gmail.com</p>
                 </div>
             </div>
             

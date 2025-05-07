@@ -218,85 +218,52 @@ class CafeCart {
     this.showNotification(`${itemName} added to cart!`);
   }
 
+  // Format price with peso symbol
+  formatPrice(price) {
+    return '₱' + price.toFixed(2);
+  }
+
+  // Update cart display
   updateCart() {
-    // Update cart count
-    const totalItems = this.cart.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-    this.cartCount.textContent = totalItems;
+    let total = 0;
+    this.cartItems.innerHTML = '';
 
-    // Update cart items
-    if (this.cart.length > 0) {
-      // Hide empty cart message
-      const emptyMessage = this.cartItems.querySelector(".empty-cart-message");
-      if (emptyMessage) {
-        emptyMessage.style.display = "none";
-      }
-
-      // Clear current cart items
-      this.cartItems.innerHTML = "";
-
-      // Calculate total
-      let total = 0;
-
-      // Add each item to cart
-      this.cart.forEach((item) => {
-        const itemSubtotal = item.price * item.quantity;
-        total += itemSubtotal;
-
-        const cartItemElement = document.createElement("div");
-        cartItemElement.className = "cart-item";
-        cartItemElement.innerHTML = `
-                    <div class="cart-item-details">
-                        <h4>${item.name}</h4>
-                        <p>$${item.price.toFixed(2)} x ${item.quantity}</p>
-                    </div>
-                    <div class="cart-item-actions">
-                        <button class="quantity-btn decrease" data-id="${
-                          item.id
-                        }">-</button>
-                        <span class="item-quantity">${item.quantity}</span>
-                        <button class="quantity-btn increase" data-id="${
-                          item.id
-                        }">+</button>
-                        <button class="remove-item" data-id="${item.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    <div class="cart-item-subtotal">
-                        $${itemSubtotal.toFixed(2)}
-                    </div>
-                `;
-
-        this.cartItems.appendChild(cartItemElement);
-      });
-
-      // Update total
-      this.cartTotal.textContent = `$${total.toFixed(2)}`;
-
-      // Add event listeners for quantity buttons
-      document.querySelectorAll(".quantity-btn.decrease").forEach((btn) => {
-        btn.addEventListener("click", () =>
-          this.decreaseQuantity(btn.dataset.id)
-        );
-      });
-
-      document.querySelectorAll(".quantity-btn.increase").forEach((btn) => {
-        btn.addEventListener("click", () =>
-          this.increaseQuantity(btn.dataset.id)
-        );
-      });
-
-      document.querySelectorAll(".remove-item").forEach((btn) => {
-        btn.addEventListener("click", () => this.removeItem(btn.dataset.id));
-      });
-    } else {
-      // Show empty cart message
-      this.cartItems.innerHTML =
-        '<p class="empty-cart-message">Your cart is empty</p>';
-      this.cartTotal.textContent = "$0.00";
+    if (this.cart.length === 0) {
+      this.cartItems.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
+      this.cartTotal.textContent = this.formatPrice(0);
+      this.cartCount.textContent = '0';
+      return;
     }
+
+    this.cart.forEach(item => {
+      const subtotal = item.price * item.quantity;
+      total += subtotal;
+      
+      const itemElement = document.createElement('div');
+      itemElement.className = 'cart-item';
+      itemElement.innerHTML = `
+        <div class="cart-item-details">
+          <h4>${item.name}</h4>
+          <p>${this.formatPrice(item.price)} × ${item.quantity}</p>
+        </div>
+        <div class="cart-item-quantity">
+          <button class="quantity-btn minus" onclick="cafeCart.decreaseQuantity('${item.id}')">-</button>
+          <span>${item.quantity}</span>
+          <button class="quantity-btn plus" onclick="cafeCart.increaseQuantity('${item.id}')">+</button>
+        </div>
+        <div class="cart-item-subtotal">
+          ${this.formatPrice(subtotal)}
+        </div>
+        <button class="remove-item" onclick="cafeCart.removeItem('${item.id}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      `;
+      
+      this.cartItems.appendChild(itemElement);
+    });
+
+    this.cartTotal.textContent = this.formatPrice(total);
+    this.cartCount.textContent = this.cart.reduce((sum, item) => sum + item.quantity, 0);
   }
 
   decreaseQuantity(itemId) {
@@ -493,5 +460,6 @@ class CafeCart {
 
 // Initialize cart when DOM is loaded
 document.addEventListener("DOMContentLoaded", function () {
-  const cafeCart = new CafeCart();
+  // Make cart instance globally accessible
+  window.cafeCart = new CafeCart();
 });

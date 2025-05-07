@@ -19,7 +19,7 @@ foreach ($menuItems as $item) {
 ?>
 
 <!-- Menu Banner -->
-<section class="hero" style="height: 50vh; background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/images/menu-banner.jpg');">
+<section class="hero" style="height: 50vh; background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/images/4.jpg');">
     <div class="container">
         <div class="hero-content">
             <h1 class="hero-title">Our Menu</h1>
@@ -77,7 +77,7 @@ foreach ($menuItems as $item) {
         </div>
         <div class="cart-modal-footer">
             <div class="cart-total">
-                <h3>Total: <span id="cartTotal">$0.00</span></h3>
+                <h3>Total: <span id="cartTotal">₱0.00</span></h3>
             </div>
             <button class="btn btn-primary checkout-btn" id="checkoutBtn">Checkout</button>
             <button class="btn btn-primary place-order-btn" id="placeOrderBtn" style="display: none;">Place Order</button>

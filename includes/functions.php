@@ -165,7 +165,7 @@ function getMenuItem($id) {
  * @return string Formatted price
  */
 function formatPrice($price) {
-    return '$' . number_format($price, 2);
+    return '₱' . number_format($price, 2);
 }
 
 /**
