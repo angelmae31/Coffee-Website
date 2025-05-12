@@ -1,22 +1,9 @@
 <?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Include functions
-require_once '../includes/functions.php';
-
-// Check if user is logged in
-if (!isLoggedIn()) {
-    redirect('index.php');
-}
+require_once '../config/database.php';
+require_once 'auth_check.php';
 
 // Get current page
 $currentPage = basename($_SERVER['PHP_SELF']);
-
-// Get database connection
-$conn = getDBConnection();
 
 // Get statistics
 // Total orders
@@ -40,7 +27,11 @@ $result = $conn->query("SELECT COUNT(*) as unread FROM contact_messages WHERE is
 $unreadMessages = $result->fetch_assoc()['unread'];
 
 // Get recent orders
-$recentOrders = getRecentOrders(5);
+$recentOrdersQuery = "SELECT o.*, c.name as customer_name 
+                     FROM orders o 
+                     LEFT JOIN customers c ON o.customer_id = c.id 
+                     ORDER BY o.order_date DESC LIMIT 5";
+$recentOrders = $conn->query($recentOrdersQuery)->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,7 +106,7 @@ $recentOrders = getRecentOrders(5);
                     ?>
                 </h1>
                 <div>
-                    <span>Welcome, <?php echo $_SESSION['username']; ?></span>
+                    <span>Welcome, <?php echo $admin_username; ?></span>
                 </div>
             </header>
             
@@ -197,15 +188,15 @@ $recentOrders = getRecentOrders(5);
                                             <td><?php echo $order['order_number']; ?></td>
                                             <td><?php echo $order['customer_name'] ?? 'Guest'; ?></td>
                                             <td><?php echo date('M d, Y', strtotime($order['order_date'])); ?></td>
-                                            <td><?php echo formatPrice($order['total_amount']); ?></td>
-                                            <td class="status-cell">
-                                                <span class="status-badge status-<?php echo $order['status']; ?>">
+                                            <td>$<?php echo number_format($order['total_amount'], 2); ?></td>
+                                            <td>
+                                                <span class="status-badge status-<?php echo strtolower($order['status']); ?>">
                                                     <?php echo ucfirst($order['status']); ?>
                                                 </span>
                                             </td>
                                             <td>
-                                                <a href="view_order.php?id=<?php echo $order['id']; ?>" class="action-btn edit-btn">
-                                                    <i class="fas fa-eye"></i>
+                                                <a href="view_order.php?id=<?php echo $order['id']; ?>" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-eye"></i> View
                                                 </a>
                                             </td>
                                         </tr>
@@ -214,7 +205,7 @@ $recentOrders = getRecentOrders(5);
                             </table>
                         </div>
                     <?php else: ?>
-                        <p>No orders found.</p>
+                        <p class="text-center">No recent orders found.</p>
                     <?php endif; ?>
                 </div>
 
